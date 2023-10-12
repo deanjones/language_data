@@ -1,10 +1,8 @@
 """
 Used for locating a file in the data directory.
 """
-
-from pkg_resources import resource_filename
-DATA_ROOT = resource_filename('language_data', 'data')
-import os
+from importlib import resources
+from pathlib import Path
 
 
 def data_filename(filename):
@@ -12,4 +10,6 @@ def data_filename(filename):
     Given a relative filename, get the full path to that file in the data
     directory.
     """
-    return os.path.join(DATA_ROOT, filename)
+    data_root = resources.files('language_data') / 'data'
+    with resources.as_file(data_root) as path:
+        return Path(path) / filename
